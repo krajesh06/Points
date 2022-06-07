@@ -18,5 +18,5 @@ public class MessageDTO {
 		super();
 		this.message = message;
 	}
-
+    private int points;
 }

@@ -2,7 +2,6 @@ package com.ecommerceapp.points.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,43 +22,55 @@ public class UserPointsController {
 
 	@Autowired
 	PointService pointservice;
-	
+
 	@GetMapping("user/points")
-	public  ResponseEntity<?> findByMobile_no(@RequestParam("mobile") long mobile,@RequestParam("amount") int amount) {
+	public ResponseEntity<?> findByMobile_no(@RequestParam("mobile") long mobile, @RequestParam("amount") int amount) {
 		int n = 0;
 		try {
 			System.out.println(mobile);
 
 			@SuppressWarnings("unused")
-			String message = pointservice.findByMobileNo(mobile,amount);
-			List<points> count=null;
-			count=pointsRepository.findByMobileNoAndfindBypointsPin(mobile);
-			for(points l:count) {
-				n=l.getWalletPoints();
-                
+			String message = pointservice.findByMobileNo(mobile, amount);
+			List<points> count = null;
+			count = pointsRepository.findByMobileNoAndfindBypointsPin(mobile);
+			for (points l : count) {
+				n = l.getWalletPoints();
+
 			}
-				@SuppressWarnings("unused")
-				MessageDTO message1 = new MessageDTO("success");
-				return new ResponseEntity<>(n,HttpStatus.OK);
-			
-			
-		}catch (Exception e) {
+			@SuppressWarnings("unused")
+			MessageDTO message1 = new MessageDTO("success");
+			return new ResponseEntity<>(n, HttpStatus.OK);
+
+		} catch (Exception e) {
 			MessageDTO message = new MessageDTO(e.getMessage());
 			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 		}
-		
-		
-
 	}
 
-	@GetMapping("points/insert")
-	public void point(@RequestParam ("mobile") long mobile ) {
-	points point =new points();
-	point.setMobileNo(mobile);
-	point.setWalletPoints(500);
-	pointsRepository.save(point);
-	
+	@GetMapping("user/validate/points")
+	public ResponseEntity<?> updateWalletPoints(@RequestParam("mobile") long mobileNo,
+			@RequestParam("amount") int amount) {
+		try {
+			int exsistingPoints = pointsRepository.getWalletPoints(mobileNo);
+			if (amount > 1000) {
+				int points = amount / 10;
+				int updated = pointsRepository.changeWalletPoints(points, mobileNo);
+				MessageDTO message = new MessageDTO("success");
+				message.setPoints(points);
+				return new ResponseEntity<>(message, HttpStatus.OK);
 
-}
+			} else {
+				MessageDTO message1 = new MessageDTO("success");
+				message1.setPoints(0);
+				return new ResponseEntity<>(message1, HttpStatus.OK);
+
+			}
+		} catch (Exception e) {
+			MessageDTO message = new MessageDTO(e.getMessage());
+			message.setMessage(e.getMessage());
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}
+
+	}
 
 }
