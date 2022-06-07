@@ -42,5 +42,21 @@ public class PointService {
 
 		return "success";
 	}
+	
+	public int updateWalletAddPoints(long mobile,int points)
+	{
+		int existingPoints=pointsRepository.getWalletPoints(mobile);
+		int updatedPoints=existingPoints+points;
+		pointsRepository.changeWalletPoints(updatedPoints, mobile);
+		return 1;
+	}
+	 public int updateWalletSubtractPoints(long mobile,int points)
+	 {
+		 int existingPoints=pointsRepository.getWalletPoints(mobile);
+			int updatedPoints=existingPoints-points;
+			pointsRepository.changeWalletPoints(updatedPoints, mobile);
+			return 1;
+	 }
+	 
 
 	}
