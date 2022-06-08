@@ -13,17 +13,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity(name="points")
+@Entity(name = "points")
 public class points {
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-	 @Column(name="balance_points")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	@Column(name = "balance_points")
 	private int walletPoints;
-	 @Column(name="mobile_no")
+	@Column(name = "mobile_no")
 	private long mobileNo;
-	
-	 
+
 }

@@ -28,13 +28,13 @@ public interface PointsRepository extends JpaRepository<points, Integer> {
 	int changeWalletPoints(@Param("walletPoints") int walletPoints,@Param("mobileNo") long mobileNo);
 	
 	
-	@Query("select u from com.ecommerceapp.points.model.walletpoints u  where u.mobileNo=:mobile")
+	@Query("select u from com.ecommerceapp.points.model.points u  where u.mobileNo=:mobile")
 	List<points> findByMobileNoAndfindBypointsPin(@Param("mobile") long mobile)throws SQLException;
 	
 	void save(long mobile); 
 	
-	@Query("select u.walletPoints from com.ecommerceapp.points.model.points u where u.mobileNo=:mobile")
-	int getWalletPoints(@Param("mobile") long mobile);
+	@Query("select u.walletPoints from com.ecommerceapp.points.model.points u where u.mobileNo=:mobileNo")
+	int getWalletPoints(@Param("mobileNo") long mobileNo);
 
 
 	//int findByMobileNoAndfindBypointsPin(long mobile, int pin);
