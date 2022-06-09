@@ -50,7 +50,7 @@ public class UserPointsController {
 
 	@GetMapping("user/validate/points")
 	public ResponseEntity<?> updateWalletPoints(@RequestParam("mobile") long mobileNo,@RequestParam("amount") int amount) {
-		System.out.println("hi");
+		//System.out.println("hi");
 		System.out.println(mobileNo+" "+amount);
 		
 			//System.out.println("hi");
@@ -65,6 +65,7 @@ public class UserPointsController {
 				int updated = pointsRepository.changeWalletPoints(points, mobileNo);
 				MessageDTO message = new MessageDTO("success");
 				message.setPoints(currentPoints);
+				//message.setPoints(points);	
 				return new ResponseEntity<>(message, HttpStatus.OK);
 
 			} else {
@@ -73,6 +74,35 @@ public class UserPointsController {
 				return new ResponseEntity<>(message1, HttpStatus.OK);
 
 			}
+			
+			
+	}	
+			@GetMapping("user/exsisting/points")
+			public ResponseEntity<?> showWalletPoints(@RequestParam("mobile") long mobileNo,@RequestParam("amount") int amount) {
+				//System.out.println("hi");
+				System.out.println(mobileNo+" "+amount);
+				
+					//System.out.println("hi");
+				
+					int exsistingPoints = pointsRepository.getWalletPoints(mobileNo);
+					System.out.println(exsistingPoints);
+					if (amount > 1000) {
+						int points = amount / 10;
+						points = points + exsistingPoints;
+						System.out.println(points);
+						int updated = pointsRepository.changeWalletPoints(points, mobileNo);
+						MessageDTO message = new MessageDTO("success");
+						message.setPoints(points);
+						//message.setPoints(points);	
+						return new ResponseEntity<>(message, HttpStatus.OK);
+
+					} else {
+						MessageDTO message1 = new MessageDTO("success");
+						message1.setPoints(0);
+						return new ResponseEntity<>(message1, HttpStatus.OK);
+
+					}
+
 	}
 
 }
